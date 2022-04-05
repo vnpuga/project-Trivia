@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import Proptypes from 'prop-types';
+import { connect } from 'react-redux';
+import getToken from '../services/apiRequest';
+import { tokenAction } from '../redux/actions';
+import './Login.css';
 
 class Login extends Component {
   constructor() {
@@ -19,6 +24,18 @@ class Login extends Component {
     this.setState({
       isPlayBtnDisabled: !(name && email),
     });
+  }
+
+  onPlayBtnClick = async () => {
+    const { tokenDispatch, history } = this.props;
+    history.push('/gameplay');
+    const token = await getToken();
+    tokenDispatch(token);
+  }
+
+  onConfigClick = () => {
+    const { history } = this.props;
+    history.push('/settings');
   }
 
   render() {
@@ -49,9 +66,30 @@ class Login extends Component {
         >
           Play
         </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ this.onConfigClick }
+        >
+          <img
+            className="config"
+            src="https://cdn-icons-png.flaticon.com/512/15/15185.png"
+            alt="config"
+          />
+        </button>
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  tokenDispatch: (token) => (dispatch(tokenAction(token))),
+});
+export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  history: Proptypes.shape({
+    push: Proptypes.func.isRequired,
+  }).isRequired,
+  tokenDispatch: Proptypes.func.isRequired,
+};
