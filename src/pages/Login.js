@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import getToken from '../services/apiRequest';
-import { tokenAction } from '../redux/actions';
+import { tokenAction, saveUser } from '../redux/actions';
 import './Login.css';
 
 class Login extends Component {
@@ -10,7 +10,7 @@ class Login extends Component {
     super();
     this.state = {
       name: '',
-      email: '',
+      gravatarEmail: '',
       isPlayBtnDisabled: true,
     };
   }
@@ -20,17 +20,19 @@ class Login extends Component {
   }
 
   validation = () => {
-    const { name, email } = this.state;
+    const { name, gravatarEmail } = this.state;
     this.setState({
-      isPlayBtnDisabled: !(name && email),
+      isPlayBtnDisabled: !(name && gravatarEmail),
     });
   }
 
   onPlayBtnClick = async () => {
-    const { tokenDispatch, history } = this.props;
+    const { name, gravatarEmail } = this.state;
+    const { tokenDispatch, history, userDispatch } = this.props;
     history.push('/gameplay');
     const token = await getToken();
     tokenDispatch(token);
+    userDispatch({ name, gravatarEmail });
   }
 
   onConfigClick = () => {
@@ -39,7 +41,7 @@ class Login extends Component {
   }
 
   render() {
-    const { name, email, isPlayBtnDisabled } = this.state;
+    const { name, gravatarEmail, isPlayBtnDisabled } = this.state;
     return (
       <div>
         <input
@@ -54,8 +56,8 @@ class Login extends Component {
           type="text"
           data-testid="input-gravatar-email"
           placeholder="Digite seu email"
-          name="email"
-          value={ email }
+          name="gravatarEmail"
+          value={ gravatarEmail }
           onChange={ this.handleChange }
         />
         <button
@@ -84,6 +86,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   tokenDispatch: (token) => (dispatch(tokenAction(token))),
+  userDispatch: (userInfo) => (dispatch(saveUser(userInfo))),
 });
 export default connect(null, mapDispatchToProps)(Login);
 
@@ -92,4 +95,5 @@ Login.propTypes = {
     push: Proptypes.func.isRequired,
   }).isRequired,
   tokenDispatch: Proptypes.func.isRequired,
+  userDispatch: Proptypes.func.isRequired,
 };
