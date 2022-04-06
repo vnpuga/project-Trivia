@@ -26,7 +26,7 @@ class Ranking extends Component {
     console.log(infoPlayer);
     return (
       <div>
-        <h1>Ranking</h1>
+        <h1 data-testid="ranking-title">Ranking</h1>
         <ul>
           { (infoPlayer)
             && infoPlayer.sort((a, b) => b.score - a.score).map((player, index) => (
