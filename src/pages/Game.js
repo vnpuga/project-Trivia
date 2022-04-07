@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { getTrivia } from '../services/apiRequest';
+import './Game.css';
 
 class Game extends Component {
   constructor() {
@@ -10,6 +11,7 @@ class Game extends Component {
     this.state = {
       questions: [],
       answers: [],
+      foiRespondido: false,
     };
   }
 
@@ -42,9 +44,13 @@ class Game extends Component {
     this.setState({ answers: answersArray });
   }
 
+  triggerColor = () => {
+    this.setState({ foiRespondido: true });
+  }
+
   render() {
     const { placar, name, email } = this.props;
-    const { questions: { results }, answers } = this.state;
+    const { questions: { results }, answers, foiRespondido } = this.state;
     return (
       <div>
         <Header placar={ placar } name={ name } email={ email } />
@@ -58,6 +64,8 @@ class Game extends Component {
               key={ index }
               type="button"
               data-testid={ ans.type }
+              className={ foiRespondido ? ans.type : null }
+              onClick={ this.triggerColor }
             >
               {ans.answer}
             </button>
