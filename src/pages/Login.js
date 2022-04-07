@@ -29,10 +29,10 @@ class Login extends Component {
   onPlayBtnClick = async () => {
     const { name, gravatarEmail } = this.state;
     const { tokenDispatch, history, userDispatch } = this.props;
-    history.push('/gameplay');
     const token = await getToken();
     tokenDispatch(token);
     userDispatch({ name, gravatarEmail });
+    history.push('/gameplay');
   }
 
   onConfigClick = () => {
