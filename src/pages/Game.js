@@ -12,17 +12,32 @@ class Game extends Component {
       questions: [],
       answers: [],
       foiRespondido: false,
+      time: 30,
+      answerBtnDisable: false,
     };
   }
 
   async componentDidMount() {
     const { token } = this.props;
     const questions = await getTrivia(token);
+    const fiveSeconds = 5000;
     this.setState({
       questions,
     });
     this.answerShuffle();
+    setTimeout(() => this.timer(), fiveSeconds);
   }
+
+  // componentDidUpdate() {
+  //   this.disableBtn();
+  // }
+
+  // disableBtn = () => {
+  //   const { time } = this.state;
+  //   if (time === 0) {
+  //     this.setState({ answerBtnDisable: true });
+  //   }
+  // }
 
   answerShuffle = async () => {
     const { questions: { results } } = this.state;
@@ -48,9 +63,26 @@ class Game extends Component {
     this.setState({ foiRespondido: true });
   }
 
+  timer = () => {
+    const oneSecond = 1000;
+    const one = 1;
+    setInterval(() => {
+      const { time } = this.state;
+      if (time === 0) {
+        this.setState({ answerBtnDisable: true });
+        // clearInterval
+      }
+      this.setState((prevState) => ({ time: prevState.time - one }));
+    }, oneSecond);
+  }
+
   render() {
     const { placar, name, email } = this.props;
-    const { questions: { results }, answers, foiRespondido } = this.state;
+    const {
+      questions: { results },
+      answers,
+      foiRespondido,
+      time, answerBtnDisable } = this.state;
     return (
       <div>
         <Header placar={ placar } name={ name } email={ email } />
@@ -64,14 +96,20 @@ class Game extends Component {
               key={ index }
               type="button"
               data-testid={ ans.type }
+              value={ ans.type }
               className={ foiRespondido ? ans.type : null }
               onClick={ this.triggerColor }
+              disable={ answerBtnDisable }
             >
               {ans.answer}
             </button>
           ))}
         </div>
-        <span>Timer</span>
+        <span>
+          Timer:
+          {'  '}
+          { time }
+        </span>
         <button type="button" style={ { display: 'none' } }>Próxima</button>
       </div>
     );
