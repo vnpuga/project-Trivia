@@ -15,6 +15,7 @@ class Game extends Component {
       foiRespondido: false,
       time: 30,
       answerBtnDisable: false,
+      questionIndex: 0,
     };
   }
 
@@ -30,10 +31,14 @@ class Game extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this.gambiarra(prevState);
+    this.istimedOut(prevState);
   }
 
-  gambiarra = (prevState) => {
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
+  }
+
+  istimedOut = (prevState) => {
     if (prevState.time === 1) {
       this.setState({
         answerBtnDisable: true,
@@ -44,14 +49,14 @@ class Game extends Component {
   }
 
     answerShuffle = async () => {
-      const { questions: { results } } = this.state;
+      const { questions: { results }, questionIndex } = this.state;
       const answersArray = [];
-      const bliu = {
-        answer: results[0].correct_answer,
+      const correctAnswer = {
+        answer: results[questionIndex].correct_answer,
         type: 'correct-answer' };
-      answersArray.push(bliu);
+      answersArray.push(correctAnswer);
 
-      results[0].incorrect_answers.forEach((wrongAnswer) => {
+      results[questionIndex].incorrect_answers.forEach((wrongAnswer) => {
         answersArray.push({
           answer: wrongAnswer,
           type: 'wrong-answer',
@@ -71,16 +76,14 @@ class Game extends Component {
     this.triggerColor();
     const { value } = target;
     const { scoreDispatch } = this.props;
-    const { time, questions } = this.state;
+    const { time, questions, questionIndex } = this.state;
     const numberTEN = 10;
     if (value === 'correct-answer') {
-      const { difficulty } = questions.results[0];
+      const { difficulty } = questions.results[questionIndex];
       const numberDifficulty = this.handleDifficulty(difficulty);
       scoreDispatch(numberTEN + (time * numberDifficulty));
     }
-    if (value === 'wrong-answer') {
-      scoreDispatch(0);
-    }
+    this.setState({ foiRespondido: true });
   }
 
   handleDifficulty = (difficulty) => {
@@ -104,19 +107,41 @@ class Game extends Component {
     }, oneSecond);
   }
 
+  nextBtnClick = () => {
+    const { questionIndex } = this.state;
+    const questionLimit = 4;
+    if (questionIndex === questionLimit) {
+      const { history } = this.props;
+      history.push('/feedback');
+    } else {
+      this.setState((prev) => ({
+        questionIndex: prev.questionIndex + 1,
+        foiRespondido: false,
+        time: 30,
+      }));
+      this.answerShuffle();
+    }
+  }
+
   render() {
     const { placar, name, email } = this.props;
     const {
       questions: { results },
       answers,
       foiRespondido,
-      time, answerBtnDisable } = this.state;
+      time, answerBtnDisable, questionIndex } = this.state;
     return (
       <div>
         <Header placar={ placar } name={ name } email={ email } />
         <div>
-          <h1 data-testid="question-category">{ (results) && results[0].category}</h1>
-          <p data-testid="question-text">{ (results) && results[0].question }</p>
+          <h1
+            data-testid="question-category"
+          >
+            { (results) && results[questionIndex].category }
+          </h1>
+          <p data-testid="question-text">
+            { (results) && results[questionIndex].question }
+          </p>
         </div>
         <div data-testid="answer-options">
           { answers.map((ans, index) => (
@@ -138,7 +163,14 @@ class Game extends Component {
           {'  '}
           { time }
         </span>
-        <button type="button" style={ { display: 'none' } }>Próxima</button>
+        <button
+          type="button"
+          style={ foiRespondido ? { visibility: 'visible' } : { visibility: 'hidden' } }
+          data-testid="btn-next"
+          onClick={ this.nextBtnClick }
+        >
+          Próxima
+        </button>
       </div>
     );
   }

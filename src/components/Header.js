@@ -7,7 +7,6 @@ class Header extends Component {
     const { placar, name, email } = this.props;
     return (
       <header>
-        <h1>Pagina do Jogo</h1>
         <p data-testid="header-player-name">
           {name}
         </p>
