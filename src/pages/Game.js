@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { getTrivia } from '../services/apiRequest';
 import './Game.css';
+import { sumAction } from '../redux/actions';
 
 class Game extends Component {
   constructor() {
@@ -66,6 +67,35 @@ class Game extends Component {
     this.setState({ foiRespondido: true });
   }
 
+  handleClick = ({ target }) => {
+    this.triggerColor();
+    const { value } = target;
+    const { scoreDispatch } = this.props;
+    const { time, questions } = this.state;
+    const numberTEN = 10;
+    if (value === 'correct-answer') {
+      const { difficulty } = questions.results[0];
+      const numberDifficulty = this.handleDifficulty(difficulty);
+      scoreDispatch(numberTEN + (time * numberDifficulty));
+    }
+    if (value === 'wrong-answer') {
+      scoreDispatch(0);
+    }
+  }
+
+  handleDifficulty = (difficulty) => {
+    const numberOne = 1;
+    const numberTwo = 2;
+    const numberThree = 3;
+    if (difficulty === 'easy') {
+      return numberOne;
+    } if (difficulty === 'medium') {
+      return numberTwo;
+    } if (difficulty === 'hard') {
+      return numberThree;
+    }
+  }
+
   timer = () => {
     const oneSecond = 1000;
     const one = 1;
@@ -96,7 +126,7 @@ class Game extends Component {
               data-testid={ ans.type }
               value={ ans.type }
               className={ foiRespondido ? ans.type : null }
-              onClick={ this.triggerColor }
+              onClick={ this.handleClick }
               disabled={ answerBtnDisable }
             >
               {ans.answer}
@@ -121,7 +151,11 @@ const mapStateToProps = (state) => ({
   token: state.token,
 });
 
-export default connect(mapStateToProps, null)(Game);
+const mapDispatchToProps = (dispatch) => ({
+  scoreDispatch: (sum) => (dispatch(sumAction(sum))),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 Game.propTypes = {
   email: PropTypes.string,
