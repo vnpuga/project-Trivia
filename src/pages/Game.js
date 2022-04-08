@@ -28,36 +28,39 @@ class Game extends Component {
     setTimeout(() => this.timer(), fiveSeconds);
   }
 
-  // componentDidUpdate() {
-  //   this.disableBtn();
-  // }
-
-  // disableBtn = () => {
-  //   const { time } = this.state;
-  //   if (time === 0) {
-  //     this.setState({ answerBtnDisable: true });
-  //   }
-  // }
-
-  answerShuffle = async () => {
-    const { questions: { results } } = this.state;
-    const answersArray = [];
-    const bliu = {
-      answer: results[0].correct_answer,
-      type: 'correct-answer' };
-    answersArray.push(bliu);
-
-    results[0].incorrect_answers.forEach((wrongAnswer) => {
-      answersArray.push({
-        answer: wrongAnswer,
-        type: 'wrong-answer',
-      });
-      const magicNumber = 0.5;
-      answersArray.sort(() => Math.random() - magicNumber);
-    });
-    // https://flaviocopes.com/how-to-shuffle-array-javascript/
-    this.setState({ answers: answersArray });
+  componentDidUpdate(prevProps, prevState) {
+    this.gambiarra(prevState);
   }
+
+  gambiarra = (prevState) => {
+    if (prevState.time === 1) {
+      this.setState({
+        answerBtnDisable: true,
+        foiRespondido: true,
+      });
+      clearInterval(this.intervalID);
+    }
+  }
+
+    answerShuffle = async () => {
+      const { questions: { results } } = this.state;
+      const answersArray = [];
+      const bliu = {
+        answer: results[0].correct_answer,
+        type: 'correct-answer' };
+      answersArray.push(bliu);
+
+      results[0].incorrect_answers.forEach((wrongAnswer) => {
+        answersArray.push({
+          answer: wrongAnswer,
+          type: 'wrong-answer',
+        });
+        const magicNumber = 0.5;
+        answersArray.sort(() => Math.random() - magicNumber);
+      });
+      // https://flaviocopes.com/how-to-shuffle-array-javascript/
+      this.setState({ answers: answersArray });
+    }
 
   triggerColor = () => {
     this.setState({ foiRespondido: true });
@@ -66,12 +69,7 @@ class Game extends Component {
   timer = () => {
     const oneSecond = 1000;
     const one = 1;
-    setInterval(() => {
-      const { time } = this.state;
-      if (time === 0) {
-        this.setState({ answerBtnDisable: true });
-        // clearInterval
-      }
+    this.intervalID = setInterval(() => {
       this.setState((prevState) => ({ time: prevState.time - one }));
     }, oneSecond);
   }
@@ -99,7 +97,7 @@ class Game extends Component {
               value={ ans.type }
               className={ foiRespondido ? ans.type : null }
               onClick={ this.triggerColor }
-              disable={ answerBtnDisable }
+              disabled={ answerBtnDisable }
             >
               {ans.answer}
             </button>
