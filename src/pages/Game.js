@@ -145,19 +145,20 @@ class Game extends Component {
       foiRespondido,
       time, answerBtnDisable, questionIndex } = this.state;
     return (
-      <div>
+      <div className="game-container">
         <Header placar={ placar } name={ name } email={ email } />
-        <div>
+        <div className="question-container">
           <h1
+            className="question-category"
             data-testid="question-category"
           >
             { (results) && results[questionIndex].category }
           </h1>
-          <p data-testid="question-text">
+          <p data-testid="question-text" className="question-text">
             { (results) && results[questionIndex].question }
           </p>
         </div>
-        <div data-testid="answer-options">
+        <div data-testid="answer-options" className="answer-options">
           { answers.map((ans, index) => (
             <button
               key={ index }

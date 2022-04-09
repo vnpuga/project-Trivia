@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import getToken from '../services/apiRequest';
 import { tokenAction, saveUser } from '../redux/actions';
 import './Login.css';
+import { Settings } from '@material-ui/icons';
 
 class Login extends Component {
   constructor() {
@@ -45,7 +46,6 @@ class Login extends Component {
     return (
       <div className="container-login">
         <fieldset className="login">
-          <h1>Let's Play Trivia</h1>
           <input
             type="text"
             data-testid="input-player-name"
@@ -70,23 +70,19 @@ class Login extends Component {
               data-testid="btn-play"
               disabled={ isPlayBtnDisabled }
               onClick={ this.onPlayBtnClick }
-              className="btn btn-light play"
+              className={ !isPlayBtnDisabled ? 'bounce' : 'no-bounce' }
             >
               PLAY
             </button>
-            <button
-              type="button"
-              data-testid="btn-settings"
-              onClick={ this.onConfigClick }
-              className="config-button"
-            >
-              <img
-                className="config"
-                src="https://cdn-icons-png.flaticon.com/512/15/15185.png"
-                alt="config"
-              />
-            </button>
           </div>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ this.onConfigClick }
+            className="config-button"
+          >
+            <Settings fontSize="large" />
+          </button>
         </fieldset>
       </div>
     );
