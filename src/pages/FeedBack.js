@@ -4,16 +4,8 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 
 class Feedback extends Component {
-  constructor() {
-    super();
-    this.state = ({
-      assertions: 0,
-      score: 10,
-    });
-  }
-
   messageFeedback = () => {
-    const { assertions } = this.state;
+    const { assertions } = this.props;
     const minScore = 3;
     if (assertions < minScore) {
       return 'Could be better...';
@@ -24,7 +16,7 @@ class Feedback extends Component {
 
   handlePlayAgain = () => {
     const { history } = this.props;
-    history.push('/gameplay');
+    history.push('/');
   }
 
   handleRanking = () => {
@@ -33,17 +25,13 @@ class Feedback extends Component {
   }
 
   render() {
-    const {
-      score,
-      assertions,
-    } = this.state;
-    const { placar, name, email } = this.props;
+    const { placar, name, email, assertions } = this.props;
     return (
       <div>
         <Header placar={ placar } name={ name } email={ email } />
         <section>
           <h3 data-testid="feedback-text">{ this.messageFeedback() }</h3>
-          <p data-testid="feedback-total-score">{ score }</p>
+          <p data-testid="feedback-total-score">{ placar }</p>
           <p data-testid="feedback-total-question">{ assertions }</p>
         </section>
         <button
@@ -70,6 +58,7 @@ const mapStateToProps = (state) => ({
   name: state.player.name,
   placar: state.player.score,
   email: state.player.gravatarEmail,
+  assertions: state.player.assertions,
 });
 
 export default connect(mapStateToProps, null)(Feedback);
