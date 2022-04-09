@@ -1,4 +1,4 @@
-import { SAVE_USER, SUM_ACTION } from '../actions';
+import { SAVE_USER, SUM_ACTION, RESET_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -19,6 +19,11 @@ const playerReducer = (state = INITIAL_STATE, action) => {
       ...state,
       score: state.score + action.payload,
       assertions: Number(state.assertions + 1),
+    };
+  case RESET_SCORE:
+    return {
+      ...state,
+      score: 0,
     };
   default:
     return state;
