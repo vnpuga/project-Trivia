@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import { getTrivia } from '../services/apiRequest';
 import './Game.css';
 import { sumAction } from '../redux/actions';
+import gravatarUrl from '../services/gravatarUrl';
 
 class Game extends Component {
   constructor() {
@@ -113,6 +114,7 @@ class Game extends Component {
     if (questionIndex === questionLimit) {
       const { history } = this.props;
       history.push('/feedback');
+      this.setLocalStorage();
     } else {
       this.setState((prev) => ({
         questionIndex: prev.questionIndex + 1,
@@ -120,6 +122,18 @@ class Game extends Component {
         time: 30,
       }));
       this.answerShuffle();
+    }
+  }
+
+  setLocalStorage = () => {
+    const { name, email, placar: score } = this.props;
+    const newPlayer = { name, score, picture: gravatarUrl(email) };
+    const ranking = JSON.parse(localStorage.getItem('players'));
+    if (ranking) {
+      ranking.push(newPlayer);
+      localStorage.setItem('players', JSON.stringify(ranking));
+    } else {
+      localStorage.setItem('players', JSON.stringify([newPlayer]));
     }
   }
 

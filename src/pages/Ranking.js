@@ -1,35 +1,38 @@
 import React, { Component } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
-import gravatarUrl from '../services/gravatarUrl';
+import { resetScore } from '../redux/actions';
+// import gravatarUrl from '../services/gravatarUrl';
 
 class Ranking extends Component {
-  componentDidMount() {
-    const { name, email, score } = this.props;
-    const newPlayer = { name, score, picture: gravatarUrl(email) };
-    const ranking = JSON.parse(localStorage.getItem('players'));
-    if (ranking) {
-      ranking.push(newPlayer);
-      localStorage.setItem('players', JSON.stringify(ranking));
-    } else {
-      localStorage.setItem('players', JSON.stringify([newPlayer]));
-    }
-  }
+  // componentDidMount() {
+  //   const { name, email, score } = this.props;
+  //   const newPlayer = { name, score, picture: gravatarUrl(email) };
+  //   const ranking = JSON.parse(localStorage.getItem('players'));
+  //   if (ranking) {
+  //     ranking.push(newPlayer);
+  //     localStorage.setItem('players', JSON.stringify(ranking));
+  //   } else {
+  //     localStorage.setItem('players', JSON.stringify([newPlayer]));
+  //   }
+  // }
 
   onLoginClick = () => {
-    const { history } = this.props;
+    const { history, resetDispatch } = this.props;
+    resetDispatch();
     history.push('/');
   };
 
   render() {
-    const infoPlayer = JSON.parse(localStorage.getItem('players'));
+    const infoPlayer = JSON.parse(localStorage.getItem('players'))
+      .sort((a, b) => b.score - a.score);
     console.log(infoPlayer);
     return (
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>
         <ul>
-          { (infoPlayer)
-            && infoPlayer.sort((a, b) => b.score - a.score).map((player, index) => (
+          {
+            infoPlayer.map((player, index) => (
               <li key={ player }>
                 <img src={ player.picture } alt={ player.name } />
                 <p data-testid={ `player-name-${index}` }>
@@ -39,7 +42,8 @@ class Ranking extends Component {
                   { player.score }
                 </p>
               </li>
-            ))}
+            ))
+          }
         </ul>
         <button
           type="button"
@@ -59,10 +63,14 @@ Ranking.propTypes = {
   }).isRequired,
 }.isRequired;
 
-const mapStateToProps = (state) => ({
-  name: state.player.name,
-  score: state.player.score,
-  email: state.player.gravatarEmail,
+// const mapStateToProps = (state) => ({
+//   name: state.player.name,
+//   score: state.player.score,
+//   email: state.player.gravatarEmail,
+// });
+
+const mapDispatchToProps = (dispatch) => ({
+  resetDispatch: () => dispatch(resetScore()),
 });
 
-export default connect(mapStateToProps, null)(Ranking);
+export default connect(null, mapDispatchToProps)(Ranking);

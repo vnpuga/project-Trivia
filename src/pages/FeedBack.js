@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import { resetScore } from '../redux/actions';
 
 class Feedback extends Component {
   messageFeedback = () => {
@@ -15,7 +16,8 @@ class Feedback extends Component {
   }
 
   handlePlayAgain = () => {
-    const { history } = this.props;
+    const { history, resetDispatch } = this.props;
+    resetDispatch();
     history.push('/');
   }
 
@@ -61,7 +63,11 @@ const mapStateToProps = (state) => ({
   assertions: state.player.assertions,
 });
 
-export default connect(mapStateToProps, null)(Feedback);
+const mapDispatchToProps = (dispatch) => ({
+  resetDispatch: () => dispatch(resetScore()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
 
 Feedback.propTypes = {
   history: PropTypes.shape({
