@@ -43,42 +43,51 @@ class Login extends Component {
   render() {
     const { name, gravatarEmail, isPlayBtnDisabled } = this.state;
     return (
-      <div>
-        <input
-          type="text"
-          data-testid="input-player-name"
-          placeholder="Digite seu nome"
-          name="name"
-          value={ name }
-          onChange={ this.handleChange }
-        />
-        <input
-          type="text"
-          data-testid="input-gravatar-email"
-          placeholder="Digite seu email"
-          name="gravatarEmail"
-          value={ gravatarEmail }
-          onChange={ this.handleChange }
-        />
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ isPlayBtnDisabled }
-          onClick={ this.onPlayBtnClick }
-        >
-          Play
-        </button>
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ this.onConfigClick }
-        >
-          <img
-            className="config"
-            src="https://cdn-icons-png.flaticon.com/512/15/15185.png"
-            alt="config"
+      <div className="container-login">
+        <fieldset className="login">
+          <h1>Let's Play Trivia</h1>
+          <input
+            type="text"
+            data-testid="input-player-name"
+            placeholder="Digite seu nome"
+            name="name"
+            value={ name }
+            onChange={ this.handleChange }
+            className="form-control"
           />
-        </button>
+          <input
+            type="text"
+            data-testid="input-gravatar-email"
+            placeholder="Digite seu email"
+            name="gravatarEmail"
+            value={ gravatarEmail }
+            onChange={ this.handleChange }
+            className="form-control"
+          />
+          <div className="container-buttons">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ isPlayBtnDisabled }
+              onClick={ this.onPlayBtnClick }
+              className="btn btn-light play"
+            >
+              PLAY
+            </button>
+            <button
+              type="button"
+              data-testid="btn-settings"
+              onClick={ this.onConfigClick }
+              className="config-button"
+            >
+              <img
+                className="config"
+                src="https://cdn-icons-png.flaticon.com/512/15/15185.png"
+                alt="config"
+              />
+            </button>
+          </div>
+        </fieldset>
       </div>
     );
   }
