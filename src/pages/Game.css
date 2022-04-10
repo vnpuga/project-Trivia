@@ -12,6 +12,8 @@
 
   --otoAmarelo: #fbc638;
 
+  --duration: 30;
+
 }
 
 .correct-answer {
@@ -22,26 +24,31 @@
   border: 3px solid red;
 }
 
+.correct-answer:disabled, .wrong-answer:disabled {
+  color: black;
+}
+
 .game-container {
   align-items: center;
-  border: 2px solid rgb(185, 185, 185);
+  background-color: rgba(255, 255, 255, 0.87);
   box-shadow: 5px 6px 0 1px black;
   color: white;
   display: flex;
   flex-direction: column;
-  height: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  height: 700px;
+  margin: 1.5em auto;
   width: 60%;
 }
 
 .question-box {
   backface-visibility: hidden;
+  background-color: rgb(206, 206, 206);
   box-shadow: 5px 6px 0 1px black;
   display: flex;
   flex-direction: column;
-  transform: skewX(-2deg);
   margin-top: 1em;
+  min-height: 400px;
+  transform: skewX(-2deg);
   width: 60%;
 }
 
@@ -58,9 +65,19 @@
   border-radius: 2px;
   box-sizing: border-box;
   justify-self: flex-start;
+  max-height: 3em;
+  min-height: 2em;
   padding: 10px;
   text-align: center;
   text-transform: capitalize;
+}
+
+.question-text {
+  color: black;
+  font-size: large;
+  min-height: 3em;
+  padding: 4px 8px;
+  text-align: center;
 }
 
 .answer-options {
@@ -74,9 +91,50 @@
   margin: 5px 0;
 }
 
+.unanswered {
+  border-radius: 4px;
+  box-shadow: inset -2px -2px 0 1px black;
+}
+
 .next-btn-container {
   align-items: center;
   display: flex;
   height: 50vh;
   justify-content: center;
+}
+
+.round-time-bar {
+  margin-top: auto;
+}
+
+.round-time-bar div {
+  animation: roundtime calc(var(--duration) * 1s) steps(var(--duration)) forwards;
+  height: 8px;
+  transform-origin: left center;
+}
+
+.round-time-bar[ data-style = 'smooth' ] div {
+  animation: roundtime calc(var(--duration) * 1s) linear forwards , changeColor 2s infinite;
+}
+
+@keyframes roundtime {
+
+  to {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes changeColor {
+
+  0% {
+    background-color: black;
+  }
+
+  50% {
+    background-color: var(--otoAmarelo);
+  }
+
+  100% {
+    background-color: black;
+  }
 }

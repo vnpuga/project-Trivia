@@ -16,6 +16,7 @@ class Game extends Component {
       answers: [],
       foiRespondido: false,
       time: 30,
+      timeBar: false,
       answerBtnDisable: false,
       questionIndex: 0,
     };
@@ -45,6 +46,7 @@ class Game extends Component {
       this.setState({
         answerBtnDisable: true,
         foiRespondido: true,
+        timeBar: false,
       });
       clearInterval(this.intervalID);
     }
@@ -74,8 +76,10 @@ class Game extends Component {
     this.setState({ foiRespondido: true });
   }
 
-  handleClick = ({ target }) => {
+  handleAnswerClick = ({ target }) => {
     this.triggerColor();
+    this.setState({ timeBar: false });
+    clearInterval(this.intervalID);
     const { value } = target;
     const { scoreDispatch } = this.props;
     const { time, questions, questionIndex } = this.state;
@@ -107,6 +111,7 @@ class Game extends Component {
     this.intervalID = setInterval(() => {
       this.setState((prevState) => ({ time: prevState.time - one }));
     }, oneSecond);
+    this.setState({ timeBar: true });
   }
 
   nextBtnClick = () => {
@@ -121,8 +126,11 @@ class Game extends Component {
         questionIndex: prev.questionIndex + 1,
         foiRespondido: false,
         time: 30,
+        timeBar: true,
+        answerBtnDisable: false,
       }));
       this.answerShuffle();
+      this.timer();
     }
   }
 
@@ -144,9 +152,9 @@ class Game extends Component {
       questions: { results },
       answers,
       foiRespondido,
-      time, answerBtnDisable, questionIndex } = this.state;
+      time, answerBtnDisable, questionIndex, timeBar } = this.state;
     return (
-      <div className="game-container">
+      <div className="game-container bg">
         <Header placar={ placar } name={ name } email={ email } />
         <div className="question-box">
           <div className="question-container">
@@ -167,19 +175,22 @@ class Game extends Component {
                 type="button"
                 data-testid={ ans.type }
                 value={ ans.type }
-                className={ foiRespondido ? ans.type : null }
-                onClick={ this.handleClick }
+                className={ foiRespondido ? ans.type : 'unanswered' }
+                onClick={ this.handleAnswerClick }
                 disabled={ answerBtnDisable }
               >
                 {ans.answer}
               </button>
             ))}
           </div>
-          <span>
-            Timer:
+          <span style={ { display: 'none' } }>
             {'  '}
             { time }
           </span>
+          { timeBar && (
+            <div className="round-time-bar" data-style="smooth" data-color="yellow">
+              <div />
+            </div>)}
         </div>
         <div className="next-btn-container">
           <NextButton

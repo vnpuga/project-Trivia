@@ -1,7 +1,8 @@
 .game-header {
   align-items: center;
   align-self: center;
-  border-bottom: 1px solid black;
+  background-color: #6225e6;
+  border-bottom: 4px solid black;
   display: flex;
   justify-content: space-between;
   padding: 5px 10px;
