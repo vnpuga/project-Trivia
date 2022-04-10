@@ -81,7 +81,7 @@ class Login extends Component {
             onClick={ this.onConfigClick }
             className="config-button"
           >
-            <Settings fontSize="large" />
+            <Settings fontSize="large" className="setting-btn" />
           </button>
         </fieldset>
       </div>

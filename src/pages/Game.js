@@ -128,8 +128,7 @@ class Game extends Component {
         time: 30,
         timeBar: true,
         answerBtnDisable: false,
-      }));
-      this.answerShuffle();
+      }), this.answerShuffle);
       this.timer();
     }
   }

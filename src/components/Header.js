@@ -20,7 +20,7 @@ class Header extends Component {
           </h2>
         </div>
         <h2 data-testid="header-score">
-          Pontuação:
+          Score:
           {' '}
           {placar}
         </h2>
