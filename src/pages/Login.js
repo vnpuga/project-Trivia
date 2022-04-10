@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Settings } from '@material-ui/icons';
 import getToken from '../services/apiRequest';
 import { tokenAction, saveUser } from '../redux/actions';
 import './Login.css';
-import { Settings } from '@material-ui/icons';
 
 class Login extends Component {
   constructor() {

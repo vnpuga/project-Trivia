@@ -6,6 +6,7 @@ import { getTrivia } from '../services/apiRequest';
 import './Game.css';
 import { sumAction } from '../redux/actions';
 import gravatarUrl from '../services/gravatarUrl';
+import NextButton from '../components/NextButton';
 
 class Game extends Component {
   constructor() {
@@ -147,45 +148,46 @@ class Game extends Component {
     return (
       <div className="game-container">
         <Header placar={ placar } name={ name } email={ email } />
-        <div className="question-container">
-          <h1
-            className="question-category"
-            data-testid="question-category"
-          >
-            { (results) && results[questionIndex].category }
-          </h1>
-          <p data-testid="question-text" className="question-text">
-            { (results) && results[questionIndex].question }
-          </p>
-        </div>
-        <div data-testid="answer-options" className="answer-options">
-          { answers.map((ans, index) => (
-            <button
-              key={ index }
-              type="button"
-              data-testid={ ans.type }
-              value={ ans.type }
-              className={ foiRespondido ? ans.type : null }
-              onClick={ this.handleClick }
-              disabled={ answerBtnDisable }
+        <div className="question-box">
+          <div className="question-container">
+            <h1
+              className="question-category"
+              data-testid="question-category"
             >
-              {ans.answer}
-            </button>
-          ))}
+              { (results) && results[questionIndex].category }
+            </h1>
+            <p data-testid="question-text" className="question-text">
+              { (results) && results[questionIndex].question }
+            </p>
+          </div>
+          <div data-testid="answer-options" className="answer-options">
+            { answers.map((ans, index) => (
+              <button
+                key={ index }
+                type="button"
+                data-testid={ ans.type }
+                value={ ans.type }
+                className={ foiRespondido ? ans.type : null }
+                onClick={ this.handleClick }
+                disabled={ answerBtnDisable }
+              >
+                {ans.answer}
+              </button>
+            ))}
+          </div>
+          <span>
+            Timer:
+            {'  '}
+            { time }
+          </span>
         </div>
-        <span>
-          Timer:
-          {'  '}
-          { time }
-        </span>
-        <button
-          type="button"
-          style={ foiRespondido ? { visibility: 'visible' } : { visibility: 'hidden' } }
-          data-testid="btn-next"
-          onClick={ this.nextBtnClick }
-        >
-          Próxima
-        </button>
+        <div className="next-btn-container">
+          <NextButton
+            show={ foiRespondido ? { visibility: 'visible' } : { visibility: 'hidden' } }
+            testid="btn-next"
+            click={ this.nextBtnClick }
+          />
+        </div>
       </div>
     );
   }

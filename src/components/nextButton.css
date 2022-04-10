@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:900i');
+
+* {
+  box-sizing: border-box;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.nxt-config {
+  transform: skewX(15deg);
+}
+
+span:nth-child( 2 ) {
+  margin-left: 30px;
+  position: relative;
+  top: 12%;
+  width: 20px;
+}
+
+
+.one {
+  transform: translateX(-60%);
+  transition: 0.4s;
+}
+
+.two {
+  transform: translateX(-30%);
+  transition: 0.5s;
+}
+
+.cta {
+  background: #6225e6;
+  box-shadow: 6px 6px 0 black;
+  color: white;
+  display: flex;
+  font-family: Poppins , sans-serif;
+  font-size: 40px;
+  padding: 10px 45px;
+  text-decoration: none;
+  transform: skewX(-15deg);
+  transition: 1s;
+}
+
+.cta:focus {
+  outline: none;
+}
+
+.cta:hover {
+  box-shadow: 10px 10px 0 #fbc638;
+  transition: 0.5s;
+}
+
+.cta span:nth-child( 2 ) {
+  margin-right: 0;
+  transition: 0.5s;
+}
+
+.cta:hover span:nth-child( 2 ) {
+  margin-right: 45px;
+  transition: 0.5s;
+}
+
+
+.cta:hover path.three {
+  animation: color_anim 1s infinite 0.2s;
+}
+
+.cta:hover path.one {
+  animation: color_anim 1s infinite 0.6s;
+  transform: translateX(0%);
+}
+
+.cta:hover path.two {
+  animation: color_anim 1s infinite 0.4s;
+  transform: translateX(0%);
+}
+
+/* SVG animations */
+
+@keyframes color_anim {
+
+  0% {
+    fill: white;
+  }
+
+  50% {
+    fill: #fbc638;
+  }
+
+  100% {
+    fill: white;
+  }
+}

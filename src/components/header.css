@@ -4,7 +4,8 @@
   border-bottom: 1px solid black;
   display: flex;
   justify-content: space-between;
-  width: 80%;
+  padding: 5px 10px;
+  width: 100%;
 }
 
 .gravatar {
