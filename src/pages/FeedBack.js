@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { ArrowBackIos } from '@material-ui/icons';
 import Header from '../components/Header';
 import { resetScore } from '../redux/actions';
+import './feedBack.css';
 
 class Feedback extends Component {
   messageFeedback = () => {
@@ -29,28 +31,44 @@ class Feedback extends Component {
   render() {
     const { placar, name, email, assertions } = this.props;
     return (
-      <div>
+      <div className="feedback-container">
         <Header placar={ placar } name={ name } email={ email } />
-        <section>
-          <h3 data-testid="feedback-text">{ this.messageFeedback() }</h3>
-          <p data-testid="feedback-total-score">{ placar }</p>
-          <p data-testid="feedback-total-question">{ assertions }</p>
+        <section className="feedback">
+          <h1 data-testid="feedback-text">{ this.messageFeedback() }</h1>
+          <p data-testid="feedback-total-score">
+            Your score is
+            {' '}
+            { placar }
+            {'.'}
+          </p>
+          <p data-testid="feedback-total-question">
+            You got
+            {' '}
+            { assertions }
+            {' '}
+            questions right!
+          </p>
         </section>
-        <button
-          type="button"
-          data-testid="btn-play-again"
-          onClick={ this.handlePlayAgain }
-        >
-          Play Again
-        </button>
-        <button
-          type="button"
-          data-testid="btn-ranking"
-          onClick={ this.handleRanking }
-        >
-          Ranking
-        </button>
-
+        <div className="buttons-container">
+          <button
+            type="button"
+            data-testid="btn-play-again"
+            className="btn-play-again"
+            onClick={ this.handlePlayAgain }
+          >
+            Play Again
+            <ArrowBackIos className="arrow-back" fontSize="large" />
+          </button>
+          <button
+            type="button"
+            data-testid="btn-ranking"
+            className="btn-ranking"
+            onClick={ this.handleRanking }
+          >
+            Ranking
+            <span role="img" aria-label="trophie">🏆</span>
+          </button>
+        </div>
       </div>
     );
   }
