@@ -1,0 +1,52 @@
+/* @keyframes MOVE-BG {
+
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(46px);
+  }
+}
+
+.bg {
+  bottom: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  left: -46px;
+  z-index: -1;
+
+  background: repeating-linear-gradient(
+    -55deg,
+    #7FE60E 1px,
+    #7ee60ed2 2px,
+    #7ee60ed2 11px,
+    #7FE60E 12px,
+    #7FE60E 20px
+  );
+  animation-name: MOVE-BG;
+  animation-duration: .6s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+} */
+
+body {
+  background-image: 
+    repeating-linear-gradient(
+      -45deg, 
+      transparent, 
+      transparent 1rem,
+      #ccc 1rem,
+      #ccc 2rem
+    );
+  background-size: 200% 200%;
+  animation: barberpole 10s linear infinite;
+}
+
+@keyframes barberpole {
+
+  100% {
+    background-position: 100% 100%;
+  }
+}

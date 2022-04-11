@@ -1,7 +1,7 @@
 import { SAVE_USER, SUM_ACTION, RESET_SCORE } from '../actions';
 
 const INITIAL_STATE = {
-  name: '',
+  name: 'Fulano',
   assertions: 0,
   score: 0,
   gravatarEmail: '',

@@ -6,6 +6,7 @@ import { getTrivia } from '../services/apiRequest';
 import './Game.css';
 import { sumAction } from '../redux/actions';
 import gravatarUrl from '../services/gravatarUrl';
+import NextButton from '../components/NextButton';
 
 class Game extends Component {
   constructor() {
@@ -15,6 +16,7 @@ class Game extends Component {
       answers: [],
       foiRespondido: false,
       time: 30,
+      timeBar: false,
       answerBtnDisable: false,
       questionIndex: 0,
     };
@@ -44,6 +46,7 @@ class Game extends Component {
       this.setState({
         answerBtnDisable: true,
         foiRespondido: true,
+        timeBar: false,
       });
       clearInterval(this.intervalID);
     }
@@ -73,8 +76,10 @@ class Game extends Component {
     this.setState({ foiRespondido: true });
   }
 
-  handleClick = ({ target }) => {
+  handleAnswerClick = ({ target }) => {
     this.triggerColor();
+    this.setState({ timeBar: false });
+    clearInterval(this.intervalID);
     const { value } = target;
     const { scoreDispatch } = this.props;
     const { time, questions, questionIndex } = this.state;
@@ -106,6 +111,7 @@ class Game extends Component {
     this.intervalID = setInterval(() => {
       this.setState((prevState) => ({ time: prevState.time - one }));
     }, oneSecond);
+    this.setState({ timeBar: true });
   }
 
   nextBtnClick = () => {
@@ -120,8 +126,10 @@ class Game extends Component {
         questionIndex: prev.questionIndex + 1,
         foiRespondido: false,
         time: 30,
-      }));
-      this.answerShuffle();
+        timeBar: true,
+        answerBtnDisable: false,
+      }), this.answerShuffle);
+      this.timer();
     }
   }
 
@@ -143,48 +151,53 @@ class Game extends Component {
       questions: { results },
       answers,
       foiRespondido,
-      time, answerBtnDisable, questionIndex } = this.state;
+      time, answerBtnDisable, questionIndex, timeBar } = this.state;
     return (
-      <div>
+      <div className="game-container bg">
         <Header placar={ placar } name={ name } email={ email } />
-        <div>
-          <h1
-            data-testid="question-category"
-          >
-            { (results) && results[questionIndex].category }
-          </h1>
-          <p data-testid="question-text">
-            { (results) && results[questionIndex].question }
-          </p>
-        </div>
-        <div data-testid="answer-options">
-          { answers.map((ans, index) => (
-            <button
-              key={ index }
-              type="button"
-              data-testid={ ans.type }
-              value={ ans.type }
-              className={ foiRespondido ? ans.type : null }
-              onClick={ this.handleClick }
-              disabled={ answerBtnDisable }
+        <div className="question-box">
+          <div className="question-container">
+            <h1
+              className="question-category"
+              data-testid="question-category"
             >
-              {ans.answer}
-            </button>
-          ))}
+              { (results) && results[questionIndex].category }
+            </h1>
+            <p data-testid="question-text" className="question-text">
+              { (results) && results[questionIndex].question }
+            </p>
+          </div>
+          <div data-testid="answer-options" className="answer-options">
+            { answers.map((ans, index) => (
+              <button
+                key={ index }
+                type="button"
+                data-testid={ ans.type }
+                value={ ans.type }
+                className={ foiRespondido ? ans.type : 'unanswered' }
+                onClick={ this.handleAnswerClick }
+                disabled={ answerBtnDisable }
+              >
+                {ans.answer}
+              </button>
+            ))}
+          </div>
+          <span style={ { display: 'none' } }>
+            {'  '}
+            { time }
+          </span>
+          { timeBar && (
+            <div className="round-time-bar" data-style="smooth" data-color="yellow">
+              <div />
+            </div>)}
         </div>
-        <span>
-          Timer:
-          {'  '}
-          { time }
-        </span>
-        <button
-          type="button"
-          style={ foiRespondido ? { visibility: 'visible' } : { visibility: 'hidden' } }
-          data-testid="btn-next"
-          onClick={ this.nextBtnClick }
-        >
-          Próxima
-        </button>
+        <div className="next-btn-container">
+          <NextButton
+            show={ foiRespondido ? { visibility: 'visible' } : { visibility: 'hidden' } }
+            testid="btn-next"
+            click={ this.nextBtnClick }
+          />
+        </div>
       </div>
     );
   }
