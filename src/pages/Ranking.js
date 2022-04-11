@@ -1,22 +1,11 @@
 import React, { Component } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
+import { ArrowBackIos } from '@material-ui/icons';
 import { resetScore } from '../redux/actions';
-// import gravatarUrl from '../services/gravatarUrl';
+import './ranking.css';
 
 class Ranking extends Component {
-  // componentDidMount() {
-  //   const { name, email, score } = this.props;
-  //   const newPlayer = { name, score, picture: gravatarUrl(email) };
-  //   const ranking = JSON.parse(localStorage.getItem('players'));
-  //   if (ranking) {
-  //     ranking.push(newPlayer);
-  //     localStorage.setItem('players', JSON.stringify(ranking));
-  //   } else {
-  //     localStorage.setItem('players', JSON.stringify([newPlayer]));
-  //   }
-  // }
-
   onLoginClick = () => {
     const { history, resetDispatch } = this.props;
     resetDispatch();
@@ -28,12 +17,12 @@ class Ranking extends Component {
       .sort((a, b) => b.score - a.score);
     console.log(infoPlayer);
     return (
-      <div>
+      <div className="ranking-container">
         <h1 data-testid="ranking-title">Ranking</h1>
-        <ul>
+        <ul className="ranking-list">
           {
             infoPlayer.map((player, index) => (
-              <li key={ player }>
+              <li key={ player } className="player-rank">
                 <img src={ player.picture } alt={ player.name } />
                 <p data-testid={ `player-name-${index}` }>
                   { player.name }
@@ -48,9 +37,11 @@ class Ranking extends Component {
         <button
           type="button"
           data-testid="btn-go-home"
+          className="btn-go-home"
           onClick={ this.onLoginClick }
         >
-          Login
+          Play again
+          <ArrowBackIos className="arrow-back" fontSize="large" />
         </button>
       </div>
     );

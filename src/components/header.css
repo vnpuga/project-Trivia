@@ -3,6 +3,7 @@
   align-self: center;
   background-color: #6225e6;
   border-bottom: 4px solid black;
+  color: white;
   display: flex;
   justify-content: space-between;
   padding: 5px 10px;
@@ -26,6 +27,7 @@
 .player-info-container img {
   border-radius: 50%;
   margin-left: 1em;
+  scale: 0.8;
 }
 
 .game-header h2 {

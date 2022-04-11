@@ -1,0 +1,150 @@
+:root {
+
+  --verdeClaro: #00af91;
+
+  --verdeEscuro: #007965;
+
+  --laranja: #f58634;
+
+  --amarelo: #ffcc29;
+
+  --roxo: #6225e6;
+
+  --otoAmarelo: #fbc638;
+
+  --duration: 30;
+
+}
+
+.feedback-container {
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.87);
+  box-shadow: 5px 6px 0 1px black;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  font-family: Poppins , sans-serif;
+  font-size: x-large;
+  height: 500px;
+  margin: 1.5em auto;
+  text-align: center;
+  width: 60%;
+}
+
+.feedback {
+  margin-top: 2em;
+}
+
+.buttons-container {
+  display: flex;
+}
+
+.buttons-container > * {
+  margin: 10px;
+}
+
+.arrow-back {
+  margin-left: 30px;
+  position: absolute;
+  text-shadow: black 1px 1px 0;
+  transform: translate(140px);
+  transition: 2s;
+}
+
+.btn-play-again:hover .arrow-back {
+  animation: bliu 1s linear infinite;
+}
+
+.btn-ranking {
+  background-color: var(--amarelo);
+  box-shadow: 6px 6px 0 black;
+  color: white;
+  display: flex;
+  font-family: Poppins , sans-serif;
+  font-size: 24px;
+  padding: 10px 45px;
+  text-decoration: none;
+  text-shadow: black 1px 1px 0;
+  transform: skewX(-15deg);
+  transition: 1s;
+}
+
+.btn-ranking:hover {
+  box-shadow: 6px 6px 0 var(--amarelo);
+}
+
+.btn-ranking span {
+  font-size: 30px;
+  margin-left: 10px;
+  transform: skewX(0deg);
+}
+
+.btn-ranking:hover span {
+  animation: wiggle 2s linear infinite;
+}
+
+.btn-play-again {
+  background-color: var(--verdeClaro);
+  box-shadow: 6px 6px 0 black;
+  color: white;
+  display: flex;
+  font-family: Poppins , sans-serif;
+  font-size: 24px;
+  padding: 10px 45px;
+  position: relative;
+  text-decoration: none;
+  text-shadow: black 1px 1px 0;
+  transform: skewX(-15deg);
+  transition: 1s;
+  width: 280px;
+}
+
+.btn-play-again:hover {
+  box-shadow: 6px 6px 0 var(--amarelo);
+}
+
+@keyframes wiggle {
+
+  0%, 7% {
+    transform: rotateZ(0);
+  }
+
+  15% {
+    transform: rotateZ(-15deg);
+  }
+
+  20% {
+    transform: rotateZ(10deg);
+  }
+
+  25% {
+    transform: rotateZ(-10deg);
+  }
+
+  30% {
+    transform: rotateZ(6deg);
+  }
+
+  35% {
+    transform: rotateZ(-4deg);
+  }
+
+  40%, 100% {
+    transform: rotateZ(0);
+  }
+}
+
+@keyframes bliu {
+
+  0%, 50% {
+    transform: translateX(140px);
+  }
+
+  25% {
+    transform: translateX(130px);
+  }
+
+  75% {
+    transform: translateX(145px);
+  }
+}
