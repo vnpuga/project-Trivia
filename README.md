@@ -1,5 +1,6 @@
 Este projeto em grupo foi desenvolvido por **Viviane Puga**, **Gabriel Ferrari**, **Karen Cano**, **Rosy Mariana**, **Pedro Tavares**, e **Raynan**,  como parte do programa de estudos da **Trybe**
 
+
 <p align="center">
   <img src="./gif1.gif" />
 </p>
